@@ -18,9 +18,9 @@ import br.com.marciodc.starwars.domain.ports.outbound.MovieRepositoryPort;
 import jakarta.persistence.EntityNotFoundException;
 
 @Component
-public class MovieRepositorAdapter implements MovieRepositoryPort {
+public class MovieRepositoryAdapter implements MovieRepositoryPort {
 
-    private static final Logger logger = LoggerFactory.getLogger(MovieRepositorAdapter.class);
+    private static final Logger logger = LoggerFactory.getLogger(MovieRepositoryAdapter.class);
 
     @Autowired
     private MovieRepository movieRepository;
@@ -28,6 +28,12 @@ public class MovieRepositorAdapter implements MovieRepositoryPort {
     @Autowired
     private ModelMapper modelMapper;
 
+    /**
+        * Inserts a new movie into the repository.
+        *
+        * @param movie the movie to be inserted
+        * @return the inserted movie
+        */
     @Override
     public Movie insertMovie(Movie movie) {
         MovieEntity entity = modelMapper.map(movie, MovieEntity.class);
@@ -64,6 +70,11 @@ public class MovieRepositorAdapter implements MovieRepositoryPort {
         throw new EntityNotFoundException("Movie not found with id: " + movie.getEpisodeId());
     }
 
+    /**
+        * Retrieves a list of all movies.
+        *
+        * @return a list of Movie objects representing all movies.
+        */
     @Override
     public List<Movie> listMovies() {
         var movies = movieRepository.findAll();
@@ -72,16 +83,22 @@ public class MovieRepositorAdapter implements MovieRepositoryPort {
             .collect(Collectors.toList());
     }
 
+    /**
+        * Finds a movie by its episode ID.
+        *
+        * @param id the episode ID of the movie to find
+        * @return the movie with the specified episode ID, or null if not found
+        * @throws EntityNotFoundException if no movie is found with the specified episode ID
+        */
     @Override
     public Movie findByEpisodeId(int id) {
         Optional<MovieEntity> movieEntity = movieRepository.findByEpisodeId(id);
-
-        if (movieEntity.isPresent()) {
-            return modelMapper.map(movieEntity, Movie.class);
+        if (!movieEntity.isPresent()) {
+            logger.error("Movie not found with id: " + id);
+            throw new EntityNotFoundException("Movie not found with id: " + id);
         }
         
-        logger.error("Movie not found with id: " + id);
-        throw new EntityNotFoundException("Movie not found with id: " + id);
+        return modelMapper.map(movieEntity.get(), Movie.class);
     }
 
 }
