@@ -1,0 +1,223 @@
+openapi: 3.0.1
+info:
+  title: Star Wars Movies API
+  description: API for managing Star Wars movies
+  version: "1.0.0"
+servers:
+  - url: http://localhost:8080/api/movies
+    description: Development server
+tags:
+  - name = "Movies"
+  - description = "List and manage all Swar Wars movies"
+paths:
+  /:
+    get:
+      tags:
+        - Movies
+      summary: Get a list of all movies
+      operationId: findAllMovies
+      responses:
+        '200':
+          description: Found movies
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+  /{id}:
+    get:
+      tags:
+        - Movies
+      summary: Get a movie by episode id
+      operationId: findMovieById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The episode ID of the movie to retrieve
+      responses:
+        '200':
+          description: Found movie
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '404':
+          description: Movie not found
+    patch:
+      tags:
+        - Movies
+      summary: Update the opening crawl of a movie by episode id
+      operationId: updateMovieOpeningCrawl
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The episode ID of the movie to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MovieRequestDTO'
+      responses:
+        '200':
+          description: Movie updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '400':
+          description: Invalid movie data
+        '404':
+          description: Movie not found
+
+components:
+  schemas:
+    Movie:
+      type: object
+      properties:
+        episodeId:
+          type: integer
+          description: The ID of the episode.
+        title:
+          type: string
+          description: The title of the movie.
+        openingCrawl:
+          type: string
+          description: The opening crawl text of the movie.
+        director:
+          type: string
+          description: The director of the movie.
+        producer:
+          type: string
+          description: The producer(s) of the movie.
+        releaseDate:
+          type: string
+          format: date
+          description: The release date of the movie.
+        created:
+          type: string
+          format: date-time
+          description: The creation timestamp of the movie record.
+        edited:
+          type: string
+          format: date-time
+          description: The last edited timestamp of the movie record.
+        url:
+          type: string
+          description: A URL to more information about the movie.
+        version:
+          type: integer
+          description: The version of the movie data.
+        characters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Character'
+          description: A list of characters in the movie.
+        planets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Planet'
+          description: A list of planets featured in the movie.
+        starships:
+          type: array
+          items:
+            $ref: '#/components/schemas/Starship'
+          description: A list of starships featured in the movie.
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vehicle'
+          description: A list of vehicles featured in the movie.
+        species:
+          type: array
+          items:
+            $ref: '#/components/schemas/Species'
+          description: A list of species featured in the movie.
+    MovieRequestDTO:
+      type: object
+      properties:
+        episodeId:
+          type: integer
+        title:
+          type: string
+        openingCrawl:
+          type: string
+        director:
+          type: string
+        producer:
+          type: string
+        releaseDate:
+          type: string
+          format: date
+        created:
+          type: string
+          format: date-time
+        edited:
+          type: string
+          format: date-time
+        url:
+          type: string
+        version:
+          type: integer
+        characters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Character'
+          description: A list of characters in the movie.
+        planets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Planet'
+          description: A list of planets featured in the movie.
+        starships:
+          type: array
+          items:
+            $ref: '#/components/schemas/Starship'
+          description: A list of starships featured in the movie.
+        vehicles:
+          type: array
+          items:
+            $ref: '#/components/schemas/Vehicle'
+          description: A list of vehicles featured in the movie.
+        species:
+          type: array
+          items:
+            $ref: '#/components/schemas/Species'
+          description: A list of species featured in the movie.
+    Character:
+      type: object
+      properties:
+        characterUrl:
+          type: string
+          description: The url of characteres.
+    Planet:
+      type: object
+      properties:
+        characterUrl:
+          type: string
+          description: The url of planet.
+    Starship:
+      type: object
+      properties:
+        characterUrl:
+          type: string
+          description: The url of starship.
+    Vehicle:
+      type: object
+      properties:
+        characterUrl:
+          type: string
+          description: The url of vehicle.
+    Species:
+      type: object
+      properties:
+        characterUrl:
+          type: string
+          description: The url of species.

@@ -65,8 +65,8 @@ public class MovieRepositoryAdapter implements MovieRepositoryPort {
     
             return modelMapper.map(savedEntity, Movie.class);
         }
-        
-        logger.error("Movie not found with id: " + movie.getEpisodeId());
+
+        logger.error("Movie not found with id: {}", movie.getEpisodeId());
         throw new EntityNotFoundException("Movie not found with id: " + movie.getEpisodeId());
     }
 
@@ -93,8 +93,8 @@ public class MovieRepositoryAdapter implements MovieRepositoryPort {
     @Override
     public Movie findByEpisodeId(int id) {
         Optional<MovieEntity> movieEntity = movieRepository.findByEpisodeId(id);
-        if (!movieEntity.isPresent()) {
-            logger.error("Movie not found with id: " + id);
+        if (movieEntity.isEmpty()) {
+            logger.error("Movie not found with id: {}", id);
             throw new EntityNotFoundException("Movie not found with id: " + id);
         }
         

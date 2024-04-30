@@ -3,6 +3,7 @@ package br.com.marciodc.starwars.domain.entity;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Movie {
 
@@ -22,11 +23,12 @@ public class Movie {
     private List<Vehicle> vehicles;
     private List<Species> species;
 
-    public Movie() {}
+    public Movie() {
+    }
 
     public Movie(int episodeId, String title, String openingCrawl, String director, String producer,
-            Date releaseDate, Timestamp created, Timestamp edited, String url, int version, List<Characters> characters,
-            List<Planet> planets, List<Starship> starships, List<Vehicle> vehicles, List<Species> species) {
+                 Date releaseDate, Timestamp created, Timestamp edited, String url, int version, List<Characters> characters,
+                 List<Planet> planets, List<Starship> starships, List<Vehicle> vehicles, List<Species> species) {
         this.episodeId = episodeId;
         this.title = title;
         this.openingCrawl = openingCrawl;
@@ -162,5 +164,39 @@ public class Movie {
 
     public void setSpecies(List<Species> species) {
         this.species = species;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "episodeId=" + episodeId +
+                ", title='" + title + '\'' +
+                ", openingCrawl='" + openingCrawl + '\'' +
+                ", director='" + director + '\'' +
+                ", producer='" + producer + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", created=" + created +
+                ", edited=" + edited +
+                ", url='" + url + '\'' +
+                ", version=" + version +
+                ", characters=" + characters +
+                ", planets=" + planets +
+                ", starships=" + starships +
+                ", vehicles=" + vehicles +
+                ", species=" + species +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return episodeId == movie.episodeId && version == movie.version && Objects.equals(title, movie.title) && Objects.equals(openingCrawl, movie.openingCrawl) && Objects.equals(director, movie.director) && Objects.equals(producer, movie.producer) && Objects.equals(releaseDate, movie.releaseDate) && Objects.equals(created, movie.created) && Objects.equals(edited, movie.edited) && Objects.equals(url, movie.url) && Objects.equals(characters, movie.characters) && Objects.equals(planets, movie.planets) && Objects.equals(starships, movie.starships) && Objects.equals(vehicles, movie.vehicles) && Objects.equals(species, movie.species);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(episodeId, title, openingCrawl, director, producer, releaseDate, created, edited, url, version, characters, planets, starships, vehicles, species);
     }
 }
